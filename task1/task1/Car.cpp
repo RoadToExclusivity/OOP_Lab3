@@ -108,6 +108,11 @@ bool CCar::SetSpeed(int speed)
 
 bool CCar::SetGear(int gear)
 {
+	if (gear < -1 || gear > 5)
+	{
+		return false;
+	}
+
 	if (gear == m_gear)
 	{
 		return true;
