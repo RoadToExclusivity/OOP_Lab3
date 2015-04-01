@@ -1,0 +1,7 @@
+Rectangle 0 0 6 4
+Rectangle -1 -1 5 4
+Move 2 3
+Rectangle 2 3 7 3
+Rectangle 0 0 4 2
+Scale 2 4
+Move 1 -3

@@ -30,6 +30,8 @@ BOOST_AUTO_TEST_CASE(RectangleInitAndSetCheck)
 	rect.SetHeight(9);
 	BOOST_CHECK(rect.GetWidth() == 7);
 	BOOST_CHECK(rect.GetHeight() == 9);
+	BOOST_CHECK(rect.GetArea() == 63);
+	BOOST_CHECK(rect.GetPerimeter() == 32);
 
 	rect.SetLeftTop(2, 2);
 	BOOST_CHECK(rect.GetLeftTop().x == 2);
@@ -40,7 +42,6 @@ BOOST_AUTO_TEST_CASE(RectangleInitAndSetCheck)
 	rect.SetRightBottom(1, 3);
 	BOOST_CHECK(rect.GetWidth() == 0);
 	BOOST_CHECK(rect.GetHeight() == 1);
-
 }
 
 BOOST_AUTO_TEST_CASE(RectangleInitWithWrongParams)

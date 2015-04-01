@@ -48,12 +48,12 @@ CPoint CRectangle::GetRightBottom() const
 	return CPoint(m_x + m_width, m_y + m_height);
 }
 
-size_t CRectangle::Area() const
+size_t CRectangle::GetArea() const
 {
 	return m_width * m_height;
 }
 
-size_t CRectangle::Perimeter() const
+size_t CRectangle::GetPerimeter() const
 {
 	return 2 * (m_width + m_height);
 }

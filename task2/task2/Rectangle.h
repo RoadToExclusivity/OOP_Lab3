@@ -30,8 +30,8 @@ public:
 	size_t GetHeight() const;
 	CPoint GetLeftTop() const;
 	CPoint GetRightBottom() const;
-	size_t Area() const;
-	size_t Perimeter() const;
+	size_t GetArea() const;
+	size_t GetPerimeter() const;
 
 	void SetWidth(int width);
 	void SetHeight(int height);
