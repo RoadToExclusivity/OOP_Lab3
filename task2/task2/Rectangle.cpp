@@ -7,20 +7,8 @@ CRectangle::CRectangle() :
 }
 
 CRectangle::CRectangle(int x, int y, int width, int height)
+	: m_x(x), m_y(y), m_width(std::max(0, width)), m_height(std::max(0, height))
 {
-	if (width < 0)
-	{
-		width = 0;
-	}
-	if (height < 0)
-	{
-		height = 0;
-	}
-
-	m_x = x;
-	m_y = y;
-	m_width = width;
-	m_height = height;
 }
 
 

@@ -1,7 +1,10 @@
 #include "stdafx.h"
+#include "Canvas.h"
 #include "Rectangle.h"
 
 using namespace std;
+
+
 
 int StringToInt(const char *str, bool &err)
 {
@@ -24,7 +27,7 @@ int ReadNextNumber(stringstream &ss, bool &err)
 	return StringToInt(num.c_str(), err);
 }
 
-void DoAction(ofstream &fout, CRectangle &curRect, vector<CRectangle> &rectangles, const string &s)
+void DoAction(CRectangle &curRect, vector<CRectangle> &rectangles, const string &s)
 {
 	bool err = false;
 	stringstream ss(s);
@@ -77,14 +80,58 @@ void DoAction(ofstream &fout, CRectangle &curRect, vector<CRectangle> &rectangle
 	}
 }
 
-void PrintRectangle(ofstream &fout, const CRectangle &rect)
+void PrintRectangleInfo(const CRectangle &rect)
 {
 	CPoint leftTop = rect.GetLeftTop(), rightBottom = rect.GetRightBottom();
-	fout << "\t Left Top: (" << leftTop.x << "; " << leftTop.y << ")" << endl;
-	fout << "\t Size: " << rect.GetWidth() << "*" << rect.GetHeight() << endl;;
-	fout << "\t Right Bottom: (" << rightBottom.x << "; " << rightBottom.y << ")" << endl;
-	fout << "\t Area: " << rect.GetArea() << endl;
-	fout << "\t Perimeter: " << rect.GetPerimeter() << endl;
+	cout << "\t Left Top: (" << leftTop.x << "; " << leftTop.y << ")" << endl;
+	cout << "\t Size: " << rect.GetWidth() << "*" << rect.GetHeight() << endl;;
+	cout << "\t Right Bottom: (" << rightBottom.x << "; " << rightBottom.y << ")" << endl;
+	cout << "\t Area: " << rect.GetArea() << endl;
+	cout << "\t Perimeter: " << rect.GetPerimeter() << endl;
+}
+
+void FillRectangle(const CRectangle &rect, char code, CCanvas &canvas)
+{
+	CPoint leftTop = rect.GetLeftTop();
+	for (size_t i = 0; i < rect.GetWidth(); ++i)
+	{
+		for (size_t j = 0; j < rect.GetHeight(); ++j)
+		{
+			canvas.SetPixel(i + leftTop.x, j + leftTop.y, code);
+		}
+	}
+}
+
+void PrintRectangles(ostream &os, CCanvas &canvas, const vector<CRectangle> &rectangles, const CRectangle &intersectRect)
+{
+	FillRectangle(rectangles[0], '+', canvas);
+	if (rectangles.size() > 1)
+	{
+		FillRectangle(rectangles[1], '-', canvas);
+		FillRectangle(intersectRect, '#', canvas);
+	}
+	canvas.Write(os);
+}
+
+bool ReadFromFile(const _TCHAR *fileName, CRectangle &rect, vector<CRectangle> &rectangles)
+{
+	ifstream fin(fileName);
+	if (!fin)
+	{
+		return false;
+	}
+
+	string s;
+	while (getline(fin, s))
+	{
+		DoAction(rect, rectangles, s);
+	}
+	if (rect.GetWidth() != 0 || rect.GetHeight() != 0)
+	{
+		rectangles.push_back(rect);
+	}
+
+	return true;
 }
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -95,43 +142,43 @@ int _tmain(int argc, _TCHAR* argv[])
 		return 1;
 	}
 
-	ifstream fin(argv[1]);
-	if (!fin)
-	{
-		cout << "Error with input file" << endl;
-		return 1;
-	}
-	ofstream fout(argv[2]);
-	if (!fout)
-	{
-		cout << "Error with output file" << endl;
-		return 1;
-	}
-
-	string s;
 	vector<CRectangle> rectangles;
-	CRectangle rect(0, 0, 0, 0);
-	while (getline(fin, s))
+	CRectangle rect = CRectangle();
+	if (!ReadFromFile(argv[1], rect, rectangles))
 	{
-		DoAction(fout, rect, rectangles, s);
+		cout << "Error with input file " << argv[1] << endl;
+		return 0;
 	}
 
-	if (rectangles.size() == 0 && rect.GetWidth() == 0 && rect.GetHeight() == 0)
+	rect = CRectangle();
+	if (!ReadFromFile(argv[2], rect, rectangles))
+	{
+		cout << "Error with input file " << argv[2] << endl;
+	}
+
+	if (rectangles.size() == 0)
 	{
 		return 0;
 	}
-	
-	rectangles.push_back(rect);
 	CRectangle intersectRect = rectangles[0];
 	for (size_t i = 0; i < rectangles.size(); i++)
 	{
 		intersectRect.Intersect(rectangles[i]);
-		fout << "Rectangle " << i + 1 << ":" << endl;
-		PrintRectangle(fout, rectangles[i]);
+		cout << "Rectangle " << i + 1 << ":" << endl;
+		PrintRectangleInfo(rectangles[i]);
 	}
-	fout << "Intersection rectangle:" << endl;
-	PrintRectangle(fout, intersectRect);
+	cout << "Intersection rectangle:" << endl;
+	PrintRectangleInfo(intersectRect);
 
+	CCanvas canvas(60, 20);
+	if (argc > 3)
+	{
+		ofstream of(argv[3]);
+		PrintRectangles(of, canvas, rectangles, intersectRect);
+	}
+	else
+	{
+		PrintRectangles(cout, canvas, rectangles, intersectRect);
+	}
 	return 0;
 }
-
