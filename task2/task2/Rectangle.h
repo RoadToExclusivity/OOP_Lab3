@@ -21,12 +21,8 @@ struct CPoint
 class CRectangle
 {
 public:
-	CRectangle() :
-		m_x(0), m_y(0), m_width(0), m_height(0)
-	{
 
-	}
-
+	CRectangle();
 	CRectangle(int x, int y, int width, int height);
 	~CRectangle();
 
@@ -44,7 +40,8 @@ public:
 
 	void Move(int dx, int dy);
 	void Scale(int sx, int sy);
-	bool Intersect(const CRectangle &other);
+	bool Intersect(const CRectangle &other);
+
 private:
 	int m_x, m_y;
 	size_t m_width, m_height;
