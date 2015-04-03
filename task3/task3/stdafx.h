@@ -10,8 +10,9 @@
 #include <stdio.h>
 #include <tchar.h>
 #include <string>
+#include <vector>
 #include <sys\stat.h>
-
+#include <stdlib.h>
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

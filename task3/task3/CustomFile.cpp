@@ -31,7 +31,14 @@ bool CCustomFile::IsEndOfFile() const
 
 long CCustomFile::GetLength() const
 {
-	return FILE_ERROR;
+	if (!m_isFileOpened)
+	{
+		return FILE_ERROR;
+	}
+
+	struct stat stat_buf;
+	int rc = fstat(fileno(m_file), &stat_buf);
+	return rc == 0 ? stat_buf.st_size : -1;
 }
 
 long CCustomFile::GetPosition() const
@@ -42,24 +49,25 @@ long CCustomFile::GetPosition() const
 	}
 
 	long res = ftell(m_file);
-	if (res != -1L)
+	if (res == -1L)
 	{
-		return res;
+		clearerr(m_file);
+		return FILE_ERROR;
 	}
 
-	return FILE_ERROR;
+	return res;
 }
 
 bool CCustomFile::Open()
 {
-	if (m_isFileOpened)
-	{
-		Close();
-	}
-
 	if (m_fileMode == "")
 	{
 		return false;
+	}
+
+	if (m_isFileOpened)
+	{
+		Close();
 	}
 
 	if (!(m_file = fopen(m_fileName.c_str(), m_fileMode.c_str())))
@@ -67,6 +75,7 @@ bool CCustomFile::Open()
 		return false;
 	}
 	
+	m_isFileOpened = true;
 	return true;
 }
 
@@ -74,6 +83,7 @@ void CCustomFile::Close()
 {
 	if (m_isFileOpened)
 	{
+		m_isFileOpened = false;
 		fclose(m_file);
 	}
 }
@@ -88,6 +98,7 @@ int CCustomFile::GetChar()
 	int res = fgetc(m_file);
 	if (ferror(m_file))
 	{
+		clearerr(m_file);
 		return FILE_ERROR;
 	}
 	
@@ -104,6 +115,7 @@ bool CCustomFile::PutChar(char c)
 	fputc(c, m_file);
 	if (ferror(m_file))
 	{
+		clearerr(m_file);
 		return false;
 	}
 
@@ -117,7 +129,14 @@ bool CCustomFile::Seek(long offset)
 		return false;
 	}
 
-	return fseek(m_file, offset, SEEK_SET);
+	int res = fseek(m_file, offset, SEEK_SET);
+	if (ferror(m_file))
+	{
+		clearerr(m_file);
+		return false;
+	}
+
+	return res == 0;
 }
 
 size_t CCustomFile::Write(const void *ptr, size_t size, size_t count)
@@ -130,6 +149,7 @@ size_t CCustomFile::Write(const void *ptr, size_t size, size_t count)
 	size_t res = fwrite(ptr, size, count, m_file);
 	if (ferror(m_file))
 	{
+		clearerr(m_file);
 		return FILE_ERROR;
 	}
 
@@ -146,6 +166,7 @@ size_t CCustomFile::Read(void *ptr, size_t size, size_t count)
 	size_t res = fread(ptr, size, count, m_file);
 	if (ferror(m_file))
 	{
+		clearerr(m_file);
 		return FILE_ERROR;
 	}
 
