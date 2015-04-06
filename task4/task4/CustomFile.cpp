@@ -31,16 +31,14 @@ bool CCustomFile::IsEndOfFile() const
 
 long CCustomFile::GetLength() const
 {
-	/*if (!m_isFileOpened)
+	if (!m_isFileOpened)
 	{
 		return FILE_ERROR;
 	}
 
 	struct stat stat_buf;
 	int rc = fstat(fileno(m_file), &stat_buf);
-	return rc == 0 ? stat_buf.st_size : -1;*/
-
-	return FILE_ERROR;
+	return rc == 0 ? stat_buf.st_size : -1;
 }
 
 long CCustomFile::GetPosition() const
