@@ -8,7 +8,6 @@
 #include "targetver.h"
 
 #include <algorithm>
-#include <ctype.h>
 #include <stdio.h>
 #include <tchar.h>
 #include <locale.h>

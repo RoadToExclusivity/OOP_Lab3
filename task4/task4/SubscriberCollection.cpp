@@ -78,31 +78,15 @@ bool CSubscriberCollection::AddSub(const CSubscriber &sub)
 		}
 	}
 
-	if (res)
-	{
-		m_subs.push_back(sub);
-	}
 	return res;
 }
 
-bool CSubscriberCollection::ChangeSubInfo(size_t index, const CSubscriber &sub)
+void CSubscriberCollection::ChangeSubInfo(size_t index, const CSubscriber &sub)
 {
-	if (index < 0 || index >= m_subs.size())
-	{
-		return false;
-	}
-
 	m_subs[index] = sub;
-	return true;
 }
 
-bool CSubscriberCollection::DeleteSub(size_t index)
+void CSubscriberCollection::DeleteSub(size_t index)
 {
-	if (index < 0 || index >= m_subs.size())
-	{
-		return false;
-	}
-
 	m_subs.erase(m_subs.begin() + index);
-	return true;
 }
