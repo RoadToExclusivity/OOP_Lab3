@@ -10,7 +10,7 @@ public:
 
 	bool IsEqualName(const CName &name) const;
 	bool IsEqualName(const std::string &name) const;
-	std::string GetName() const;
+	std::string GetFullName() const;
 
 private:
 	std::string m_fullName;

@@ -9,6 +9,7 @@ public:
 	~CAddress();
 
 	bool IsEqualAddress(const CAddress &address) const;
+	std::string GetFullAddress() const;
 
 private:
 	std::string m_fullAddress;

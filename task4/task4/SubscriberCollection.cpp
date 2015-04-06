@@ -39,6 +39,16 @@ CSubscriberCollection::~CSubscriberCollection()
 {
 }
 
+size_t CSubscriberCollection::GetSize() const
+{
+	return m_subs.size();
+}
+
+CSubscriber CSubscriberCollection::GetSub(size_t index) const
+{
+	return m_subs[index];
+}
+
 vector<size_t> CSubscriberCollection::FindSub(const CSubscriber &searchSub) const
 {
 	vector<size_t> res;

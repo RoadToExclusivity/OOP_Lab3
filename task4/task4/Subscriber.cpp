@@ -62,7 +62,7 @@ std::vector<CMulticasedString> CSubscriber::GetEmails() const
 
 void CSubscriber::SetName(const CName &name)
 {
-	if (name.GetName() != "")
+	if (name.GetFullName() != "")
 	{
 		m_name = name;
 	}
@@ -77,7 +77,7 @@ void CSubscriber::AddPhoneNumber(const CMulticasedString &phoneNumber)
 {
 	if (phoneNumber.GetString() != "")
 	{
-		if (find(m_phoneNumbers.cbegin(), m_phoneNumbers.cend(), phoneNumber) != m_phoneNumbers.cend())
+		if (find(m_phoneNumbers.cbegin(), m_phoneNumbers.cend(), phoneNumber) == m_phoneNumbers.cend())
 		{
 			m_phoneNumbers.push_back(phoneNumber);
 		}
@@ -88,7 +88,7 @@ void CSubscriber::AddEmail(const CMulticasedString &email)
 {
 	if (email.GetString() != "")
 	{
-		if (find(m_emails.cbegin(), m_emails.cend(), email) != m_emails.cend())
+		if (find(m_emails.cbegin(), m_emails.cend(), email) == m_emails.cend())
 		{
 			m_emails.push_back(email);
 		}

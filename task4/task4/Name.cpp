@@ -19,7 +19,7 @@ CName::~CName()
 {
 }
 
-std::string CName::GetName() const
+std::string CName::GetFullName() const
 {
 	return m_fullName;
 }

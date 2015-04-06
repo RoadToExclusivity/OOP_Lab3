@@ -79,7 +79,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\task3\task3\CustomFile.h" />
     <ClInclude Include="Address.h" />
     <ClInclude Include="AddressBook.h" />
     <ClInclude Include="Name.h" />
@@ -91,7 +90,6 @@
     <ClInclude Include="MulticasedString.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\task3\task3\CustomFile.cpp" />
     <ClCompile Include="Address.cpp" />
     <ClCompile Include="AddressBook.cpp" />
     <ClCompile Include="MulticasedString.cpp" />

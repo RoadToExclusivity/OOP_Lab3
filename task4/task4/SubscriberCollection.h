@@ -8,6 +8,8 @@ public:
 	CSubscriberCollection(const CSubscriber &sub);
 	~CSubscriberCollection();
 
+	size_t GetSize() const;
+	CSubscriber GetSub(size_t index) const;
 	std::vector<size_t> FindSub(const CSubscriber &sub) const;
 
 	bool AddSub(const CSubscriber &sub);

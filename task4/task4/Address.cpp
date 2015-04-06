@@ -35,3 +35,8 @@ bool CAddress::IsEqualAddress(const CAddress &address) const
 
 	return res;
 }
+
+std::string CAddress::GetFullAddress() const
+{
+	return m_fullAddress;
+}
