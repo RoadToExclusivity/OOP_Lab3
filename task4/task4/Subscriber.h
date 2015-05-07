@@ -23,7 +23,10 @@ public:
 	void SetAddress(const CAddress &address);
 	void AddPhoneNumber(const CMulticasedString &phoneNumber);
 	void AddEmail(const CMulticasedString &email);
-
+	void ChangePhoneNumber(size_t index, const std::string &phoneNumber);
+	void ChangeEmail(size_t index, const std::string &email);
+	void DeletePhoneNumber(size_t index);
+	void DeleteEmail(size_t index);
 private:
 	CName m_name;
 	CAddress m_address;

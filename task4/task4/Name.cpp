@@ -35,7 +35,8 @@ bool CName::IsEqualName(const CName &name) const
 				return str.IsEqual(nameField);
 			}) == m_nameFields.cend())
 		{
-
+			res = false;
+			break;
 		}
 	}
 
