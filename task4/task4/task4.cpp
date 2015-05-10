@@ -117,10 +117,10 @@ bool GetSubData(string &name, string &address, string &phoneNumber, string &emai
 
 void PrintMulticasedVector(const vector<CMulticasedString> &a)
 {
+	cout << a.size() << endl;
+	
 	if (a.size() > 0)
 	{
-		cout << '\t' << a.size() << endl;
-		
 		size_t counter = 1;
 		for (const auto &elem : a)
 		{
@@ -135,9 +135,11 @@ void PrintSubCollectionInfo(const CSubscriberCollection &collection, const vecto
 	for (size_t i = 0; i < indexes.size(); ++i)
 	{
 		CSubscriber& sub = collection.GetSub(indexes[i]);
-		cout << i + 1 << ". " << sub.GetName().GetFullName() << endl;
-		cout << '\t' << sub.GetAddress().GetFullAddress() << endl;
+		cout << i + 1 << ". Имя: " << sub.GetName().GetFullName() << endl;
+		cout << "Адрес: " << sub.GetAddress().GetFullAddress() << endl;
+		cout << "Номер телефона: ";
 		PrintMulticasedVector(sub.GetPhoneNumbers());
+		cout << "Электронная почта: ";
 		PrintMulticasedVector(sub.GetEmails());
 	}
 	cout << endl;
@@ -175,6 +177,210 @@ void PrintMainActions()
 	cout << "Q. Выйти" << endl;
 }
 
+void ChangeSub(CSubscriberCollection &collection, size_t index)
+{
+	string name = "", address = "", phoneNumber = "", email = "";
+
+	if (GetSubData(name, address, phoneNumber, email))
+	{
+		CSubscriber newSub(name, address, phoneNumber, email);
+		if (!collection.ChangeSubInfo(index, newSub))
+		{
+			cout << "Невозможно изменить абонента!" << endl;
+		}
+		else
+		{
+			cout << "Абонент успешно изменен !" << endl;
+		}
+	}
+	cout << endl;
+}
+
+void EditName(CSubscriberCollection &collection, size_t index)
+{
+	string name = "";
+	if (!ReadName(name))
+	{
+		cout << "Неверное имя абонента !" << endl;
+	}
+	else
+	{
+		CSubscriber curSub = collection.GetSub(index);
+		curSub.SetName(name);
+		if (!collection.ChangeSubInfo(index, curSub))
+		{
+			cout << "Невозможно изменить абонента!" << endl;
+		}
+		else
+		{
+			cout << "Имя успешно изменено !" << endl;
+		}
+	}
+}
+
+void EditAddress(CSubscriberCollection &collection, size_t index)
+{
+	string address = "";
+	ReadAddress(address);
+
+	CSubscriber curSub = collection.GetSub(index);
+	curSub.SetAddress(address);
+	if (!collection.ChangeSubInfo(index, curSub))
+	{
+		cout << "Невозможно изменить абонента!" << endl;
+	}
+	else
+	{
+		cout << "Адрес успешно изменен !" << endl;
+	}
+}
+
+void AddPhoneNumber(CSubscriberCollection &collection, size_t index)
+{
+	string phoneNumber = "";
+
+	if (!ReadPhoneNumber(phoneNumber))
+	{
+		cout << "Неверный номер телефона !" << endl;
+	}
+	else
+	{
+		CSubscriber curSub = collection.GetSub(index);
+		curSub.AddPhoneNumber(phoneNumber);
+		if (!collection.ChangeSubInfo(index, curSub))
+		{
+			cout << "Невозможно изменить абонента!" << endl;
+		}
+		else
+		{
+			cout << "Номер успешно добавлен !" << endl;
+		}
+	}
+}
+
+void AddEmail(CSubscriberCollection &collection, size_t index)
+{
+	string email = "";
+	ReadEmail(email);
+
+	CSubscriber curSub = collection.GetSub(index);
+	curSub.AddEmail(email);
+	if (!collection.ChangeSubInfo(index, curSub))
+	{
+		cout << "Невозможно изменить абонента!" << endl;
+	}
+	else
+	{
+		cout << "E-mail успешно добавлен !" << endl;
+	}
+}
+
+void ChangePhoneNumber(CSubscriberCollection &collection, size_t index)
+{
+	CSubscriber curSub = collection.GetSub(index);
+	PrintMulticasedVector(curSub.GetPhoneNumbers());
+	size_t newIndex;
+	if (!ReadIndex(newIndex, curSub.GetPhoneNumbers().size()))
+	{
+		cout << "Неверный индекс" << endl;
+	}
+	else
+	{
+		newIndex--;
+		string phoneNumber = "";
+		if (!ReadPhoneNumber(phoneNumber))
+		{
+			cout << "Неверный номер телефона !" << endl;
+		}
+		else
+		{
+			curSub.ChangePhoneNumber(newIndex, phoneNumber);
+			if (!collection.ChangeSubInfo(index, curSub))
+			{
+				cout << "Невозможно изменить абонента!" << endl;
+			}
+			else
+			{
+				cout << "Номер успешно изменен !" << endl;
+			}
+		}
+	}
+}
+
+void ChangeEmail(CSubscriberCollection &collection, size_t index)
+{
+	CSubscriber curSub = collection.GetSub(index);
+	PrintMulticasedVector(curSub.GetEmails());
+	size_t newIndex;
+	if (!ReadIndex(newIndex, curSub.GetEmails().size()))
+	{
+		cout << "Неверный индекс" << endl;
+	}
+	else
+	{
+		newIndex--;
+		string email = "";
+		ReadEmail(email);
+		curSub.ChangeEmail(newIndex, email);
+		if (!collection.ChangeSubInfo(index, curSub))
+		{
+			cout << "Невозможно изменить абонента!" << endl;
+		}
+		else
+		{
+			cout << "E-mail успешно изменен !" << endl;
+		}
+	}
+}
+
+void DeletePhoneNumber(CSubscriberCollection &collection, size_t index)
+{
+	CSubscriber curSub = collection.GetSub(index);
+	PrintMulticasedVector(curSub.GetPhoneNumbers());
+	size_t newIndex;
+	if (!ReadIndex(newIndex, curSub.GetPhoneNumbers().size()))
+	{
+		cout << "Неверный индекс" << endl;
+	}
+	else
+	{
+		newIndex--;
+		curSub.DeletePhoneNumber(newIndex);
+		if (!collection.ChangeSubInfo(index, curSub))
+		{
+			cout << "Невозможно изменить абонента!" << endl;
+		}
+		else
+		{
+			cout << "Номер успешно удален !" << endl;
+		}
+	}
+}
+
+void DeleteEmail(CSubscriberCollection &collection, size_t index)
+{
+	CSubscriber curSub = collection.GetSub(index);
+	PrintMulticasedVector(curSub.GetEmails());
+	size_t newIndex;
+	if (!ReadIndex(newIndex, curSub.GetEmails().size()))
+	{
+		cout << "Неверный индекс" << endl;
+	}
+	else
+	{
+		newIndex--;
+		curSub.DeleteEmail(newIndex);
+		if (!collection.ChangeSubInfo(index, curSub))
+		{
+			cout << "Невозможно изменить абонента!" << endl;
+		}
+		else
+		{
+			cout << "E-mail успешно удален !" << endl;
+		}
+	}
+}
+
 void EditSubscriberActions(CSubscriberCollection &collection, size_t index)
 {
 	string choice = "`";
@@ -185,183 +391,20 @@ void EditSubscriberActions(CSubscriberCollection &collection, size_t index)
 		string name = "", address = "", phoneNumber = "", email = "";
 		CSubscriber curSub = collection.GetSub(index);
 
-		if (choice == "1")
+		if (choice.length() == 1)
 		{
-			if (GetSubData(name, address, phoneNumber, email))
+			switch (choice[0])
 			{
-				CSubscriber newSub(name, address, phoneNumber, email);
-				if (!collection.ChangeSubInfo(index, newSub))
-				{
-					cout << "Невозможно изменить абонента!" << endl;
-				}
-				else
-				{
-					cout << "Абонент успешно изменен !" << endl;
-				}
-			}
-			cout << endl;
-		}
-		else
-		{
-			if (choice == "2")
-			{
-				ReadAddress(address);
-				curSub.SetAddress(address);
-				if (!collection.ChangeSubInfo(index, curSub))
-				{
-					cout << "Невозможно изменить абонента!" << endl;
-				}
-				else
-				{
-					cout << "Адрес успешно изменен !" << endl;
-				}
-			}
-			if (choice == "3")
-			{
-				if (!ReadName(name))
-				{
-					cout << "Неверное имя абонента !" << endl;
-				}
-				else
-				{
-					curSub.SetName(name);
-					if (!collection.ChangeSubInfo(index, curSub))
-					{
-						cout << "Невозможно изменить абонента!" << endl;
-					}
-					else
-					{
-						cout << "Имя успешно изменено !" << endl;
-					}
-				}
-			}
-			if (choice == "4")
-			{
-				if (!ReadPhoneNumber(phoneNumber))
-				{
-					cout << "Неверный номер телефона !" << endl;
-				}
-				else
-				{
-					curSub.AddPhoneNumber(phoneNumber);
-					if (!collection.ChangeSubInfo(index, curSub))
-					{
-						cout << "Невозможно изменить абонента!" << endl;
-					}
-					else
-					{
-						cout << "Номер успешно добавлен !" << endl;
-					}
-				}
-			}
-			if (choice == "5")
-			{
-				ReadEmail(email);
-				curSub.AddEmail(email);
-				if (!collection.ChangeSubInfo(index, curSub))
-				{
-					cout << "Невозможно изменить абонента!" << endl;
-				}
-				else
-				{
-					cout << "E-mail успешно добавлен !" << endl;
-				}
-			}
-			if (choice == "6")
-			{
-				PrintMulticasedVector(curSub.GetPhoneNumbers());
-				size_t newIndex;
-				if (!ReadIndex(newIndex, curSub.GetPhoneNumbers().size() + 1))
-				{
-					cout << "Неверный индекс" << endl;
-				}
-				else
-				{
-					newIndex--;
-					if (!ReadPhoneNumber(phoneNumber))
-					{
-						cout << "Неверный номер телефона !" << endl;
-					}
-					else
-					{
-						curSub.ChangePhoneNumber(newIndex, phoneNumber);
-						if (!collection.ChangeSubInfo(index, curSub))
-						{
-							cout << "Невозможно изменить абонента!" << endl;
-						}
-						else
-						{
-							cout << "Номер успешно изменен !" << endl;
-						}
-					}
-				}
-			}
-			if (choice == "7")
-			{
-				PrintMulticasedVector(curSub.GetEmails());
-				size_t newIndex;
-				if (!ReadIndex(newIndex, curSub.GetEmails().size() + 1))
-				{
-					cout << "Неверный индекс" << endl;
-				}
-				else
-				{
-					newIndex--;
-					ReadEmail(email);
-					curSub.ChangePhoneNumber(newIndex, phoneNumber);
-					if (!collection.ChangeSubInfo(index, curSub))
-					{
-						cout << "Невозможно изменить абонента!" << endl;
-					}
-					else
-					{
-						cout << "E-mail успешно изменен !" << endl;
-					}
-				}
-			}
-			if (choice == "8")
-			{
-				PrintMulticasedVector(curSub.GetPhoneNumbers());
-				size_t newIndex;
-				if (!ReadIndex(newIndex, curSub.GetPhoneNumbers().size() + 1))
-				{
-					cout << "Неверный индекс" << endl;
-				}
-				else
-				{
-					newIndex--;
-					curSub.DeletePhoneNumber(newIndex);
-					if (!collection.ChangeSubInfo(index, curSub))
-					{
-						cout << "Невозможно изменить абонента!" << endl;
-					}
-					else
-					{
-						cout << "Номер успешно удален !" << endl;
-					}
-				}
-			}
-			if (choice == "9")
-			{
-				PrintMulticasedVector(curSub.GetEmails());
-				size_t newIndex;
-				if (!ReadIndex(newIndex, curSub.GetEmails().size() + 1))
-				{
-					cout << "Неверный индекс" << endl;
-				}
-				else
-				{
-					newIndex--;
-					curSub.DeleteEmail(newIndex);
-					if (!collection.ChangeSubInfo(index, curSub))
-					{
-						cout << "Невозможно изменить абонента!" << endl;
-					}
-					else
-					{
-						cout << "E-mail успешно удален !" << endl;
-					}
-				}
+				case'1': ChangeSub(collection, index); break;
+				case'2': EditName(collection, index); break;
+				case'3': EditAddress(collection, index); break;
+				case'4': AddPhoneNumber(collection, index); break;
+				case'5': AddEmail(collection, index); break;
+				case'6': ChangePhoneNumber(collection, index); break;
+				case'7': ChangeEmail(collection, index); break;
+				case'8': DeletePhoneNumber(collection, index); break;
+				case'9': DeleteEmail(collection, index); break;
+				default: break;
 			}
 
 			cout << endl;
@@ -371,7 +414,7 @@ void EditSubscriberActions(CSubscriberCollection &collection, size_t index)
 	}
 }
 
-void EditActions(CSubscriberCollection &collection, size_t maxIndex)
+void EditActions(CSubscriberCollection &collection, const vector<size_t> &indexes)
 {
 	string choice = "`";
 	PrintEditActions();
@@ -382,12 +425,11 @@ void EditActions(CSubscriberCollection &collection, size_t maxIndex)
 
 		size_t index;
 
-		if (choice != "R" && ReadIndex(index, maxIndex))
+		if (choice != "R" && ReadIndex(index, indexes.size()))
 		{
-			index--;
+			index = indexes[index - 1];
 			if (choice == "1")
 			{	
-				CSubscriber sub = collection.GetSub(index);
 				EditSubscriberActions(collection, index);
 			}
 			else
@@ -411,11 +453,101 @@ void EditActions(CSubscriberCollection &collection, size_t maxIndex)
 	}
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+void FindSub(CSubscriberCollection &collection)
 {
-	setlocale(LC_ALL, "rus");
+	string name = "", address = "", phoneNumber = "", email = "";
 
-	CAddressBook book;
+	if (GetSubData(name, address, phoneNumber, email))
+	{
+		CSubscriber sub(name, address, phoneNumber, email);
+		auto searchRes = collection.FindSub(sub);
+		if (searchRes.size() == 0)
+		{
+			cout << "Нет совпадений!" << endl;
+		}
+		else
+		{
+			cout << searchRes.size() << " совпадений: " << endl;
+			PrintSubCollectionInfo(collection, searchRes);
+		}
+	}
+	cout << endl;
+}
+
+void AddSub(CSubscriberCollection &collection)
+{
+	string name = "", address = "", phoneNumber = "", email = "";
+
+	if (GetSubData(name, address, phoneNumber, email))
+	{
+		CSubscriber sub(name, address, phoneNumber, email);
+		if (!collection.AddSub(sub))
+		{
+			cout << "Невозможно добавить абонента!" << endl;
+		}
+		else
+		{
+			cout << "Абонент добавлен!" << endl;
+		}
+	}
+	cout << endl;
+}
+
+void FindAndEditSub(CSubscriberCollection &collection)
+{
+	string name = "", address = "", phoneNumber = "", email = "";
+
+	if (GetSubData(name, address, phoneNumber, email))
+	{
+		CSubscriber sub(name, address, phoneNumber, email);
+		auto searchRes = collection.FindSub(sub);
+		if (searchRes.size() == 0)
+		{
+			cout << "Нет совпадений по данному абоненту!" << endl;
+		}
+		else
+		{
+			cout << searchRes.size() << " совпадений: " << endl;
+			PrintSubCollectionInfo(collection, searchRes);
+			EditActions(collection, searchRes);
+		}
+	}
+	cout << endl;
+}
+
+void MainActions(CSubscriberCollection &collection)
+{
+	string choice = "";
+	PrintMainActions();
+	while (choice != "Q")
+	{
+		getline(cin, choice);
+
+		if (choice == "1")
+		{
+			FindSub(collection);
+		}
+		else
+		{
+			if (choice == "2")
+			{
+				AddSub(collection);
+			}
+			else
+			{
+				if (choice == "3")
+				{
+					FindAndEditSub(collection);
+				}
+			}
+		}
+
+		PrintMainActions();
+	}
+}
+
+bool LoadFromDB(CAddressBook &book)
+{
 	ifstream fin(DATABASE_NAME, ios::binary);
 	if (fin)
 	{
@@ -429,84 +561,30 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 			if (choice == "N")
 			{
-				return 0;
+				return false;
 			}
 		}
 
 		fin.close();
 	}
-	
+
+	return true;
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	setlocale(LC_ALL, "rus");
+
+	CAddressBook book;
+	if (!LoadFromDB(book))
+	{
+		return 0;
+	}
+
 	CSubscriberCollection collection = book.GetSubCollection();
 
-	string choice = "";
-	PrintMainActions();
-	while (choice != "Q")
-	{
-		getline(cin, choice);
-		string name = "", address = "", phoneNumber = "", email = "";
+	MainActions(collection);
 
-		if (choice == "1")
-		{
-			if (GetSubData(name, address, phoneNumber, email))
-			{
-				CSubscriber sub(name, address, phoneNumber, email);
-				auto searchRes = collection.FindSub(sub);
-				if (searchRes.size() == 0)
-				{
-					cout << "Нет совпадений!" << endl;
-				}
-				else
-				{
-					cout << searchRes.size() << " совпадений: " << endl;
-					PrintSubCollectionInfo(collection, searchRes);
-				}
-			}
-			cout << endl;
-		}
-		else
-		{
-			if (choice == "2")
-			{
-				if (GetSubData(name, address, phoneNumber, email))
-				{
-					CSubscriber sub(name, address, phoneNumber, email);
-					if (!collection.AddSub(sub))
-					{
-						cout << "Невозможно добавить абонента!" << endl;
-					}
-					else
-					{
-						cout << "Абонент добавлен!" << endl;
-					}
-				}
-				cout << endl;
-			}
-			else
-			{
-				if (choice == "3")
-				{
-					if (GetSubData(name, address, phoneNumber, email))
-					{
-						CSubscriber sub(name, address, phoneNumber, email);
-						auto searchRes = collection.FindSub(sub);
-						if (searchRes.size() == 0)
-						{
-							cout << "Нет совпадений по данному абоненту!" << endl;
-						}
-						else
-						{
-							cout << searchRes.size() << " совпадений: " << endl;
-							PrintSubCollectionInfo(collection, searchRes);
-							EditActions(collection, searchRes.size() + 1);
-						}
-					}
-					cout << endl;
-				}
-			}
-		}
-
-		PrintMainActions();
-	}
 	book.SetSubCollection(collection);
 
 	ofstream fout(DATABASE_NAME, ios::binary);
@@ -514,4 +592,3 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	return 0;
 }
-
