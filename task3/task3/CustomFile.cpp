@@ -37,10 +37,8 @@ long CCustomFile::GetLength() const
 	}
 
 	struct stat stat_buf;
-	int rc = fstat(fileno(m_file), &stat_buf);
+	int rc = fstat(_fileno(m_file), &stat_buf);
 	return rc == 0 ? stat_buf.st_size : -1;
-
-	//return FILE_ERROR;
 }
 
 long CCustomFile::GetPosition() const
@@ -72,7 +70,8 @@ bool CCustomFile::Open()
 		Close();
 	}
 
-	if (!(m_file = fopen(m_fileName.c_str(), m_fileMode.c_str())))
+	fopen_s(&m_file, m_fileName.c_str(), m_fileMode.c_str());
+	if (!m_file)
 	{
 		return false;
 	}

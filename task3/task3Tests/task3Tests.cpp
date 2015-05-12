@@ -65,6 +65,7 @@ BOOST_AUTO_TEST_CASE(WriteFileOperationsCheck)
 {
 	BOOST_CHECK(!file.IsOpened());
 	BOOST_CHECK(file.Open());
+	BOOST_CHECK_EQUAL(file.GetLength(), 0);
 	BOOST_CHECK(file.PutChar('q'));
 	BOOST_CHECK_EQUAL(file.Write(DATA, sizeof(int), DATA_SIZE), DATA_SIZE);
 	BOOST_CHECK(file.Seek(0));
@@ -81,6 +82,7 @@ BOOST_AUTO_TEST_CASE(ReadFileOperationsCheck)
 	BOOST_CHECK(!file.IsOpened());
 	BOOST_CHECK(file.Open());
 	BOOST_CHECK(!file.PutChar('q'));
+	BOOST_CHECK_EQUAL(file.GetLength(), 21);
 
 	int ch1 = file.GetChar();
 	BOOST_CHECK_EQUAL(ch1, 'w');
