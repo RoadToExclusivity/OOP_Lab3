@@ -4,8 +4,6 @@
 
 using namespace std;
 
-
-
 int StringToInt(const char *str, bool &err)
 {
 	char * pLastChar = NULL;

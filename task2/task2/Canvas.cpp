@@ -37,7 +37,12 @@ unsigned CCanvas::GetWidth() const
 	return m_width;
 }
 
-unsigned CCanvas::GetHeight() const{	return m_height;}char CCanvas::GetPixel(int x, int y) const
+unsigned CCanvas::GetHeight() const
+{
+	return m_height;
+}
+
+char CCanvas::GetPixel(int x, int y) const
 {
 	if (!ValidCoords(x, y, m_width, m_height))
 	{
@@ -46,8 +51,21 @@ unsigned CCanvas::GetHeight() const{	return m_height;}char CCanvas::GetPixe
 
 	return m_canvas[x][y];
 }
-
-void CCanvas::Write(std::ostream &ostream) const{	for (unsigned i = 0; i < m_height; ++i)	{		for (unsigned j = 0; j < m_width; ++j)		{			ostream << m_canvas[j][i];		}		ostream << std::endl;	}}void CCanvas::Clear(char code)
+
+
+void CCanvas::Write(std::ostream &ostream) const
+{
+	for (unsigned i = 0; i < m_height; ++i)
+	{
+		for (unsigned j = 0; j < m_width; ++j)
+		{
+			ostream << m_canvas[j][i];
+		}
+		ostream << std::endl;
+	}
+}
+
+void CCanvas::Clear(char code)
 {
 	if (code < m_nullSymbol)
 	{
