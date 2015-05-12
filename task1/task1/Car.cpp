@@ -59,9 +59,9 @@ bool CCar::TurnOffEngine()
 	return false;
 }
 
-bool CCar::SetSpeed(int speed)
+bool CCar::SetSpeed(unsigned speed)
 {
-	if (!m_isEngineTurnedOn || speed < 0)
+	if (!m_isEngineTurnedOn)
 	{
 		return false;
 	}

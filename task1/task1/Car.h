@@ -19,7 +19,7 @@ public:
 
 	bool TurnOnEngine();
 	bool TurnOffEngine();
-	bool SetSpeed(int speed);
+	bool SetSpeed(unsigned speed);
 	bool SetGear(int gear);
 
 private:
